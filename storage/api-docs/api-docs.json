@@ -1,0 +1,269 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Healthcare API",
+        "description": "RESTful API that handles appointment cancellations using clean architecture principles.",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/appointment/view": {
+            "post": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "View Appointments",
+                "description": "Retrieves a list of appointments for the authenticated user",
+                "operationId": "703044a641a425a37206824255cfbb35",
+                "responses": {
+                    "200": {
+                        "description": "Appointments retrieved successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/appointment/book": {
+            "post": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Book Appointment",
+                "description": "Allows the authenticated user to book an appointment",
+                "operationId": "6302c1ffdab02768a22b53696de2ab1a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "healthcare_professional_id",
+                                    "time"
+                                ],
+                                "properties": {
+                                    "healthcare_professional_id": {
+                                        "description": "The ID of the healthcare professional",
+                                        "type": "integer"
+                                    },
+                                    "time": {
+                                        "description": "The time for the appointment",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "31-05-2025 13:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Appointment booked successfully"
+                    },
+                    "409": {
+                        "description": "Slot already booked for the given time. Please choose another time."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/appointment/cancel/{appointment}": {
+            "get": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Cancel Appointment",
+                "description": "Allows the authenticated user to cancel an appointment",
+                "operationId": "f64a6105b3b6bebd9c8f0cb21172a1bf",
+                "parameters": [
+                    {
+                        "name": "appointment",
+                        "in": "path",
+                        "description": "The ID of the appointment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Appointment cancelled successfully"
+                    },
+                    "403": {
+                        "description": "Appointment is already cancelled."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/appointment/complete/{appointment}": {
+            "get": {
+                "tags": [
+                    "Appointments"
+                ],
+                "summary": "Complete Appointment",
+                "description": "Allows the authenticated user to complete an appointment",
+                "operationId": "d8dee5186a878a75cca738653265e366",
+                "parameters": [
+                    {
+                        "name": "appointment",
+                        "in": "path",
+                        "description": "The ID of the appointment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Appointment completed successfully"
+                    },
+                    "403": {
+                        "description": "Appointment is already completed."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User Registration",
+                "description": "Allows users to register for the application",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Allen Gick"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "allen.gick@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User Login",
+                "description": "Allows users to log in to the application",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully"
+                    }
+                }
+            }
+        },
+        "/api/professionals": {
+            "get": {
+                "tags": [
+                    "Professionals"
+                ],
+                "summary": "Get Healthcare Professionals",
+                "description": "Retrieves a list of healthcare professionals",
+                "operationId": "a89c9cbdb4c7093b13e0862d33b9b5cd",
+                "responses": {
+                    "200": {
+                        "description": "Healthcare professionals retrieved successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication and user management"
+        },
+        {
+            "name": "Professionals",
+            "description": "Healthcare professionals management"
+        },
+        {
+            "name": "Appointments",
+            "description": "Appointment management and their related operations"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}

@@ -69,6 +69,10 @@ php artisan serve
 The application will be available at:  
 `http://localhost:8000`
 
+## API Documentation [Swagger Implementation]
+
+After successfully running the project, you can check the interactive API documentation in your browser at `/api/documentation`, which will display the Swagger UI with all your annotated API endpoints.
+
 ## Login Credentials for Generating Login Token
 
 You can use the following credentials to log in and generate tokens for the seeded user:
