@@ -101,6 +101,52 @@ You can use the following credentials to log in and generate tokens for the seed
 - `app/Http/Requests/` – Request validation
 - `app/Http/Controllers/` – HTTP layer controllers
 
+## Laravel Healthcare API Dockerized Setup
+
+## 📦 Prerequisites
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- Ensure ports `8080` and `3308` are available on your system.
+
+## 🛠️ Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/sachin-sanchania/healthcare-api.git
+cd healthcare-api
+```
+
+### 2. Start Docker Containers
+
+```bash
+docker-compose up -d --build
+```
+This will : 
+- Build PHP and Nginx images
+- Copy `.env.example` to `.env`
+- Generate the Laravel app key
+- Run migrations and seeders
+- Start all containers
+
+## 🌐 Access the Application
+
+Once all containers are up and running, you can access your Laravel Healthcare API using the following URLs:
+
+- 🔗 **Web App / Laravel Root**: [http://localhost:8080](http://localhost:8080)
+- 📘 **API Documentation** (e.g., Swagger or Laravel API Docs): [http://localhost:8080/api/documentation](http://localhost:8080/api/documentation)
+
+---
+
+### 🔎 Quick Verification
+
+1. Open your browser and visit [http://localhost:8080](http://localhost:8080) to check if the Laravel application is running.
+2. Visit [http://localhost:8080/api/documentation](http://localhost:8080/api/documentation) to view the API documentation.
+
+If you encounter a **database connection error**, wait a few seconds and refresh the page — MySQL might still be initializing.
+
+
 ## Contributing
 
 Feel free to fork this repository and contribute by submitting a pull request. Bug reports and feature requests are welcome.

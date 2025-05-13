@@ -1,0 +1,64 @@
+name: healthcare_api_docker
+services:
+    app:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        container_name: healthcare_app
+        image: healthcare-api
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www/html/
+        volumes:
+            - .:/var/www/html
+        expose:
+            - "9000"
+        depends_on:
+            - mysql
+        command: >
+            sh -c "
+              cp .env.example .env &&
+              php artisan key:generate &&
+              php artisan migrate --seed &&
+              php-fpm
+            "
+        networks:
+            - healthcare_network
+    web:
+        build:
+            context: ./deployment/nginx
+            dockerfile: dockerfile
+        container_name: healthcare_server
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www/html
+        volumes:
+            - .:/var/www/html
+        ports:
+            - "8080:80" # Avoid conflict with local port 80
+        depends_on:
+            - app
+        networks:
+            - healthcare_network
+
+    mysql:
+        image: mysql:8.0
+        container_name: healthcare_mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root@123
+            MYSQL_DATABASE: healthcare
+            MYSQL_USER: healthcare_db_user
+            MYSQL_PASSWORD: healthcare@123
+        ports:
+            - "3308:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - healthcare_network
+networks:
+    healthcare_network:
+        driver: bridge
+
+volumes:
+    dbdata:
